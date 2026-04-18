@@ -1,0 +1,71 @@
+{
+  "name": "react-shot",
+  "version": "1.0.0",
+  "description": "Create store screenshots with React. Built for AI agents.",
+  "keywords": [
+    "app-store",
+    "screenshots",
+    "react",
+    "play-store",
+    "puppeteer",
+    "design"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codixus/react-shot.git"
+  },
+  "homepage": "https://github.com/codixus/react-shot",
+  "type": "module",
+  "main": "./src/lib/index.ts",
+  "types": "./src/lib/index.ts",
+  "bin": {
+    "react-shot": "./src/cli/index.ts"
+  },
+  "exports": {
+    ".": "./src/lib/index.ts",
+    "./presets": "./src/lib/presets/index.ts",
+    "./types": "./src/lib/types/index.ts",
+    "./config": "./src/cli/config.ts"
+  },
+  "scripts": {
+    "dev": "vite --config demo/vite.config.ts",
+    "build": "vite build --config demo/vite.config.ts",
+    "preview:demo": "vite preview --config demo/vite.config.ts",
+    "test": "bun test",
+    "typecheck": "bunx tsc --noEmit --ignoreDeprecations 6.0",
+    "pack:dry-run": "npm pack --dry-run"
+  },
+  "files": [
+    "src/lib/",
+    "src/cli/",
+    "src/runtime/",
+    "skills/",
+    "public/assets/fonts/",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "bun": ">=1.1.0"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.3",
+    "@vitejs/plugin-react": "^4.4.1",
+    "lucide-react": "^0.577.0",
+    "puppeteer": "^24.10.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-icons": "^5.6.0",
+    "react-router-dom": "^7.5.0",
+    "sharp": "^0.33.5",
+    "tailwindcss": "^4.1.3",
+    "vite": "^6.3.1"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.3",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3"
+  }
+}

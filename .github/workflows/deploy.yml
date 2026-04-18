@@ -1,0 +1,36 @@
+name: Deploy demo
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  netlify:
+    name: Build and deploy to Netlify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.1
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build demo
+        run: bun run build
+
+      - name: Deploy to Netlify (production)
+        run: bunx netlify-cli@latest deploy --dir=dist-demo --prod --message "Deploy ${GITHUB_SHA::7}"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

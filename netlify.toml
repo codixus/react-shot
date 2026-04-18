@@ -1,0 +1,16 @@
+[build]
+  command = "bun install --frozen-lockfile && bun run build"
+  publish = "dist-demo"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # Netlify auto-detects Bun when bun.lock is present; pin the version so
+  # builds don't drift.
+  BUN_VERSION = "1.2.1"
+
+# SPA rewrite — /docs, /:compositionId, /render/:compositionId are all
+# client-side routes, so every unknown path should fall back to index.html.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

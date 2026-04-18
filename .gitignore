@@ -1,0 +1,25 @@
+node_modules/
+dist/
+dist-demo/
+output/
+*.tgz
+.netlify/
+.DS_Store
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.*
+*.local
+
+# Agent tooling
+.agents/
