@@ -8,6 +8,7 @@ export { Viewport } from "./components/Viewport";
 export { ThemeToggle } from "./components/ThemeToggle";
 export { useChromeTheme, setChromeTheme, palette } from "./components/theme";
 export type { ChromeMode, ChromePalette } from "./components/theme";
+export { useIsMobile } from "./components/useIsMobile";
 export type {
   CompositionEntry,
   CompositionProps,

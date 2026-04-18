@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ThemeToggle, useChromeTheme } from "react-shot";
+import { ThemeToggle, useChromeTheme, useIsMobile } from "react-shot";
 import type { ChromePalette } from "react-shot";
 import { compositions } from "../compositions";
 
@@ -19,7 +19,8 @@ function roleLabel(role: string) {
 
 export function Gallery() {
   const [, , c] = useChromeTheme();
-  const s = styles(c);
+  const isMobile = useIsMobile();
+  const s = styles(c, isMobile);
 
   return (
     <div style={s.root}>
@@ -119,7 +120,7 @@ function GitHubIcon() {
 
 function Kpi({ c, label, value, hint }: { c: ChromePalette; label: string; value: string; hint?: string }) {
   return (
-    <div style={{ background: c.surface, border: `1px solid ${c.border}`, borderRadius: 16, padding: 16, minHeight: 96 }}>
+    <div style={{ background: c.surface, border: `1px solid ${c.border}`, borderRadius: 16, padding: 16 }}>
       <p style={{ margin: 0, fontSize: 10, textTransform: "uppercase", letterSpacing: 2, color: c.dim }}>{label}</p>
       <p style={{ margin: "10px 0 0", fontSize: 17, fontWeight: 600, color: c.text }}>{value}</p>
       {hint ? <p style={{ margin: "6px 0 0", fontSize: 12, color: c.muted, lineHeight: 1.4 }}>{hint}</p> : null}
@@ -127,7 +128,7 @@ function Kpi({ c, label, value, hint }: { c: ChromePalette; label: string; value
   );
 }
 
-function styles(c: ChromePalette): Record<string, React.CSSProperties> {
+function styles(c: ChromePalette, isMobile: boolean): Record<string, React.CSSProperties> {
   return {
     root: {
       minHeight: "100vh",
@@ -135,12 +136,25 @@ function styles(c: ChromePalette): Record<string, React.CSSProperties> {
       color: c.text,
       fontFamily: "-apple-system, BlinkMacSystemFont, 'Inter', sans-serif",
     },
-    container: { maxWidth: 1080, margin: "0 auto", padding: "48px 24px" },
-    header: { marginBottom: 40 },
-    logoRow: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 },
+    container: { maxWidth: 1080, margin: "0 auto", padding: isMobile ? "32px 16px" : "48px 24px" },
+    header: { marginBottom: isMobile ? 28 : 40 },
+    logoRow: {
+      display: "flex",
+      flexDirection: isMobile ? "column" : "row",
+      justifyContent: "space-between",
+      alignItems: isMobile ? "stretch" : "flex-start",
+      gap: isMobile ? 18 : 16,
+    },
     logoGroup: { display: "flex", flexDirection: "column", gap: 10, minWidth: 0 },
-    titleRow: { display: "flex", alignItems: "center", gap: 14 },
-    topActions: { display: "flex", alignItems: "center", gap: 10, flex: "0 0 auto" },
+    titleRow: { display: "flex", alignItems: "center", gap: isMobile ? 12 : 14 },
+    topActions: {
+      display: "flex",
+      alignItems: "center",
+      gap: 10,
+      flex: "0 0 auto",
+      justifyContent: isMobile ? "flex-start" : undefined,
+      flexWrap: "wrap",
+    },
     docsLink: {
       padding: "8px 14px",
       borderRadius: 999,
@@ -164,10 +178,19 @@ function styles(c: ChromePalette): Record<string, React.CSSProperties> {
       background: `linear-gradient(135deg, ${c.accent}, #059669)`,
       flex: "0 0 auto",
     },
-    title: { margin: 0, fontSize: 28, fontWeight: 700, letterSpacing: -0.5 },
+    title: { margin: 0, fontSize: isMobile ? 24 : 28, fontWeight: 700, letterSpacing: -0.5, whiteSpace: "nowrap" },
     subtitle: { margin: 0, fontSize: 14, color: c.muted, maxWidth: 560, lineHeight: 1.5 },
-    kpis: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginTop: 28 },
-    grid: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 },
+    kpis: {
+      display: "grid",
+      gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
+      gap: 12,
+      marginTop: isMobile ? 20 : 28,
+    },
+    grid: {
+      display: "grid",
+      gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
+      gap: isMobile ? 12 : 16,
+    },
     card: {
       display: "flex", flexDirection: "column", gap: 12, padding: 20,
       background: c.surface, border: `1px solid ${c.border}`, borderRadius: 20,

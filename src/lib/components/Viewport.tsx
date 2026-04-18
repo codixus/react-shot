@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useChromeTheme, type ChromePalette } from "./theme";
 import { ThemeToggle } from "./ThemeToggle";
+import { useIsMobile } from "./useIsMobile";
 
 interface ViewportProps {
   children: React.ReactNode;
@@ -36,6 +37,7 @@ export function Viewport({
   const [hasFit, setHasFit] = useState(false);
   const navigate = useNavigate();
   const [, , c] = useChromeTheme();
+  const isMobile = useIsMobile();
 
   const fitToView = useCallback(() => {
     const rect = containerRef.current?.getBoundingClientRect();
@@ -133,7 +135,7 @@ export function Viewport({
     }
   };
 
-  const s = styles(c);
+  const s = styles(c, isMobile);
 
   return (
     <div style={s.root}>
@@ -240,7 +242,7 @@ function GitHubIcon() {
   );
 }
 
-function styles(c: ChromePalette): Record<string, React.CSSProperties> {
+function styles(c: ChromePalette, isMobile: boolean): Record<string, React.CSSProperties> {
   return {
     root: {
       display: "flex",
@@ -256,17 +258,25 @@ function styles(c: ChromePalette): Record<string, React.CSSProperties> {
     topbar: {
       display: "flex",
       alignItems: "center",
-      height: 48,
-      padding: "0 12px",
+      minHeight: isMobile ? 44 : 48,
+      padding: isMobile ? "6px 8px" : "0 12px",
       background: c.bgSoft,
       borderBottom: `1px solid ${c.border}`,
-      gap: 8,
+      gap: isMobile ? 6 : 8,
       flex: "0 0 auto",
       userSelect: "none",
+      flexWrap: isMobile ? "wrap" : "nowrap",
     },
     topLeft: { display: "flex", alignItems: "center", gap: 8, minWidth: 0, flex: "0 0 auto" },
-    topCenter: { display: "flex", alignItems: "center", gap: 4, flex: 1, justifyContent: "center" },
-    topRight: { display: "flex", alignItems: "center", gap: 6, flex: "0 0 auto" },
+    topCenter: {
+      display: "flex",
+      alignItems: "center",
+      gap: 4,
+      flex: 1,
+      justifyContent: "center",
+      minWidth: 0,
+    },
+    topRight: { display: "flex", alignItems: "center", gap: 6, flex: "0 0 auto", flexWrap: "wrap" },
     backBtn: {
       display: "inline-flex", alignItems: "center", gap: 6,
       background: "transparent", border: "none", color: c.muted,
@@ -283,8 +293,8 @@ function styles(c: ChromePalette): Record<string, React.CSSProperties> {
       minWidth: 56, height: 28, padding: "0 8px", background: "transparent", border: "none",
       color: c.text, cursor: "pointer", fontFamily: "ui-monospace, monospace", fontSize: 12,
     },
-    dot: { width: 1, height: 14, background: c.border, margin: "0 6px" },
-    dims: { color: c.dim, fontFamily: "ui-monospace, monospace", fontSize: 11 },
+    dot: { width: 1, height: 14, background: c.border, margin: "0 6px", display: isMobile ? "none" : "inline-block" },
+    dims: { color: c.dim, fontFamily: "ui-monospace, monospace", fontSize: 11, display: isMobile ? "none" : "inline" },
     toggleBtn: {
       padding: "6px 10px", background: "transparent", border: `1px solid ${c.border}`,
       color: c.muted, borderRadius: 6, cursor: "pointer", fontSize: 12,
@@ -312,7 +322,9 @@ function styles(c: ChromePalette): Record<string, React.CSSProperties> {
       backgroundPosition: "0 0, 0 12px, 12px -12px, -12px 0",
     },
     bottombar: {
-      height: 28, flex: "0 0 auto", display: "flex", alignItems: "center", gap: 16,
+      height: 28, flex: "0 0 auto",
+      display: isMobile ? "none" : "flex",
+      alignItems: "center", gap: 16,
       padding: "0 16px", background: c.bgSoft, borderTop: `1px solid ${c.border}`,
       fontSize: 10, color: c.dim, userSelect: "none",
     },

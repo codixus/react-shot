@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ThemeToggle, useChromeTheme, type ChromePalette } from "@/lib/index";
+import { ThemeToggle, useChromeTheme, useIsMobile, type ChromePalette } from "@/lib/index";
 
 /**
  * Single-scroll docs page. Sections anchored for quick hash nav. Content is
@@ -8,7 +8,8 @@ import { ThemeToggle, useChromeTheme, type ChromePalette } from "@/lib/index";
  */
 export function HowTo() {
   const [, , c] = useChromeTheme();
-  const s = styles(c);
+  const isMobile = useIsMobile();
+  const s = styles(c, isMobile);
 
   return (
     <div style={s.root}>
@@ -367,7 +368,7 @@ function GitHubIcon() {
   );
 }
 
-function styles(c: ChromePalette): Record<string, React.CSSProperties> {
+function styles(c: ChromePalette, isMobile: boolean): Record<string, React.CSSProperties> {
   return {
     root: {
       minHeight: "100vh",
@@ -375,8 +376,15 @@ function styles(c: ChromePalette): Record<string, React.CSSProperties> {
       color: c.text,
       fontFamily: "-apple-system, BlinkMacSystemFont, 'Inter', sans-serif",
     },
-    container: { maxWidth: 820, margin: "0 auto", padding: "28px 24px 64px" },
-    header: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 20 },
+    container: { maxWidth: 820, margin: "0 auto", padding: isMobile ? "20px 16px 48px" : "28px 24px 64px" },
+    header: {
+      display: "flex",
+      flexDirection: isMobile ? "column" : "row",
+      justifyContent: "space-between",
+      alignItems: isMobile ? "stretch" : "center",
+      gap: 12,
+      marginBottom: 20,
+    },
     backLink: { color: c.muted, textDecoration: "none", fontSize: 13 },
     headerActions: { display: "flex", alignItems: "center", gap: 8 },
     ghPill: {
@@ -385,7 +393,7 @@ function styles(c: ChromePalette): Record<string, React.CSSProperties> {
       background: c.surface, border: `1px solid ${c.border}`, color: c.text,
       fontSize: 12, textDecoration: "none",
     },
-    h1: { margin: 0, fontSize: 34, fontWeight: 700, letterSpacing: -0.8 },
+    h1: { margin: 0, fontSize: isMobile ? 26 : 34, fontWeight: 700, letterSpacing: -0.8 },
     lede: { margin: "12px 0 0", fontSize: 16, color: c.muted, lineHeight: 1.55, maxWidth: 660 },
     toc: {
       marginTop: 24, padding: "14px 16px",
@@ -405,7 +413,12 @@ function styles(c: ChromePalette): Record<string, React.CSSProperties> {
       color: c.text,
     },
     list: { margin: "12px 0 0", paddingLeft: 20, fontSize: 14, lineHeight: 1.7, color: c.muted },
-    grid2: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10, marginTop: 12 },
+    grid2: {
+      display: "grid",
+      gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
+      gap: 10,
+      marginTop: 12,
+    },
     cell: {
       padding: 14, background: c.surface, border: `1px solid ${c.border}`,
       borderRadius: 12,
