@@ -12,7 +12,7 @@ describe("defineConfig", () => {
     expect(c.port).toBe(5174);
     expect(c.export.outputDir).toBe("./appstore");
     expect(c.export.deviceFolders.ios).toBe("APP_IPHONE_67");
-    expect(c.export.deviceFolders.ipad).toBe("APP_IPAD_PRO_6GEN_129");
+    expect(c.export.deviceFolders.ipad).toBe("APP_IPAD_PRO_3GEN_129");
   });
 
   test("overrides merge onto defaults", () => {

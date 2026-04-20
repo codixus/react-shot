@@ -37,7 +37,7 @@ export default defineConfig({
     outputDir: "./appstore",
     deviceFolders: {
       ios: "APP_IPHONE_67",
-      ipad: "APP_IPAD_PRO_6GEN_129",
+      ipad: "APP_IPAD_PRO_3GEN_129",
     },
   },
 });
